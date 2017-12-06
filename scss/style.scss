@@ -1,0 +1,475 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+// VARIABLES
+$background_header_color: #222222;
+
+$primary_color: #337AB7;
+
+$header_height: 2em;
+
+
+/******************************************************
+------------------------ HEADER -----------------------
+******************************************************/
+
+header {
+
+    height: $header_height;
+
+    border-radius: 0 0 $header_height/10 $header_height/10;
+    background: $background_header_color;
+
+    #title {
+        height: $header_height;
+        line-height: $header_height;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+    }
+}
+
+
+
+
+/******************************************************
+------------------------ CONTAINER -----------------------
+******************************************************/
+
+#container {
+    display: flex;
+    margin-bottom: 3em;
+
+    #zone_gauche {
+        width: 20%;
+        display: flex;
+        flex-direction: column;
+
+	    .panel {
+
+	        width: 100%;
+	        display: inline-block;
+	        margin-top: .5em;
+	        border: .1em solid $primary_color;
+	        border-radius: .1em;
+
+	        .panel_title {
+	            padding: .5em 0 .5em 0;
+	            background: $primary_color;
+	            text-align: center;
+	            font-weight: bold;
+	            color: #ddd;
+	        }
+	        .panel_content {
+	            margin: .5em;
+	            position: relative;
+	            .progress {
+	                position: relative;
+	                height: 2em;
+	                border: .1em solid $primary_color;
+	                border-radius: .1em;
+	                .progress-bar {
+	                    position: absolute;
+	                    height: 1.9em;
+	                    width: 90%;
+	                    background: darken($primary_color, 10);
+	                    border-radius: .1em;
+	                    p {
+	                        color: white;
+	                        text-align: center;
+	                        height: 1.9em;
+	                        line-height: 1.9em;
+	                        font-size: 1rem;
+	                    }
+	                }
+	            }
+	            span {
+	            	position: absolute;
+	            	margin-top: 1em;
+	            	font-size: .9em;
+	            }
+	            a.btn {
+	                display: inline-block;
+	                margin-left: 10%;
+	                width: 80%;
+	                height: 1.5em;
+	            }
+	            a.btn-right {
+	                padding: .4em;
+	                height: 2.5em;
+	                float: right;
+	                margin: .4em;
+	            }
+	            a.btn-right,
+	            a.btn {
+	                margin-top: .4em;
+	                display: inline-block;
+	                text-decoration: none;
+	                background: $primary_color;
+	                border: .1em solid $primary_color;
+	                border-radius: .1em;
+	                text-align: center;
+	                color: white;
+	                &[disabled] {
+	                    pointer-events: none;
+	                    cursor: default;
+	                    background: none;
+	                    border-color: #ccc;
+	                    color: #ccc;
+	                }
+	            }
+	        }
+	    }
+	}
+	#main{
+		width: 80%;
+		padding: .1em .2em;
+		display: flex;
+		flex-direction: row;
+		#animation{
+			border: .1em solid $primary_color;
+			background:silver;
+			width: 60%;
+			height: 40vw;
+		}
+		#amelioration{
+			width: 40%;
+			.title{
+				height: 2em;
+				background:$primary_color;
+				text-align: center;
+				line-height: 2em;
+				color: white;
+				text-transform: capitalize;
+				border-radius: .4em .4em  0em 0em ;
+			}
+			.content{
+				border: .1em solid $primary_color;
+				border-top: none;
+				padding: .3em 10%;
+				#diponible{
+					display: flex;
+					flex-direction: row;
+				}
+			    .panel {
+		        	width: 100%;
+		        	display: inline-block;
+		        	margin-top: .5em;
+		        	border: .1em solid $primary_color;
+		        	border-radius: .1em;
+
+			        .panel_title {
+			            padding: .5em 0 .5em 0;
+			            background: $primary_color;
+			            text-align: center;
+			            font-weight: bold;
+			            color: #ddd;
+			        }
+			        .panel_content {
+			            margin: .5em;
+			            position: relative;
+			            span{
+			            	font-size: .9em;
+			            	line-height: .9em;
+			            	&:after{
+			            		content: '?';
+			            		display: inline-block;
+			            		width: 1em;
+			            		padding : .5em; 
+								border: .1em solid $primary_color;
+								font-size: .9em;
+								text-align: center;
+								float: right;
+								color: $primary_color;
+								margin-bottom: .4em;
+			            	}
+			            }
+					}
+					&[disabled]{
+						border-color: silver;
+        				&>.panel_title{
+        					background: silver;
+        				}
+        				&>.panel_content>span{
+        					color: silver;
+        					&:after{
+	        					border-color: silver;
+	        					color: silver;
+	        				}
+        				}
+        			}
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
+
+/******************************************************
+------------------------ FOOTER -----------------------
+******************************************************/
+
+footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3em;
+    background: $background_header_color;
+    text-align: center;
+    line-height: 3em;
+    color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+/******************************************************
+------------------ Mobile Verision --------------------
+******************************************************/
+
+@media(max-width: 320px) {
+
+    body {
+        width: 320px
+    }
+
+    #container {
+        flex-direction: column;
+        #zone_gauche {
+            width: 100%;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        
+	        .panel {
+	        	width: 49%;
+	        	.panel_title{
+	        		font-size: .8em;
+	        		height: 1.5em;
+	        		line-height: .8em;
+	        		padding: .2em;
+	        	}
+	            .panel_content {
+	            	p{
+	            		font-size: .9em;
+	            	}
+	                .progress {
+	                    height: 1em;
+	                    .progress-bar {
+	                        height: .9em;
+	                        width: 90%;
+	                        p {
+	                            line-height: 1em;
+	                            font-size: .9rem;
+	                        }
+	                    }
+	                }
+	                a.btn {
+	                    width: 100%;
+	                    margin-left: 0;
+	                }
+	                a.btn-right{
+	        			margin: .1em;
+	        			margin-top: .7em;
+	        			padding: .05em .5em .05em .5em;
+	        			height: 1.5em;
+	        			font-size: 1em;
+	        		}
+	        		span{
+	        			margin-left: .2em;
+	        			font-size: .8em;
+	        		}
+	            }
+	        }
+    	}
+    	#main{
+			width: 100%;
+			padding: .4em;
+			display: flex;
+			flex-direction: column;
+			#animation{
+				width: 100%;
+				height: 40vw;
+				margin-bottom: .4em;
+			}
+			#amelioration{
+				width: 100%;
+				.content{
+					padding: .3em;
+					#diponible{
+						display: flex;
+						flex-direction: column;
+					}
+					.panel{
+						width: 49%
+					}
+				}
+			}
+		}
+    }
+}
+
+@media(min-width: 321px) and (max-width: 560px) {
+
+    #container {
+		flex-direction: column;
+        #zone_gauche {
+            width: 100%;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-around;
+
+            .panel{
+            	width: 49%;
+            	.panel_title{
+	        		font-size: .8em;
+	        		height: 1.5em;
+	        		line-height: .8em;
+	        		padding: .2em;
+        		}
+            	.panel_content{
+            		margin: .2em;
+            		&>p{
+            			margin-left: 1em;
+            			font-size: 1em;
+            		}
+            		.progress {
+		                height: 1em;
+		                .progress-bar {
+		                    height: .9em;
+		                    p {
+		                        line-height: 1.2em;
+		                        font-size: .9rem;
+		                    }
+		                }
+		            }
+            		a.btn-right{
+            			margin: .5em;
+            			padding: .2em;
+            			height: 2em;
+            			font-size: .8em;
+            		}
+            		span{
+            			margin-top: .8em;
+            			margin-left: .5em;
+            			font-size: .9em;
+            		}
+            	}
+
+            }
+        }
+        #main{
+			width: 100%;
+			padding: .4em;
+			display: flex;
+			flex-direction: column;
+			#animation{
+				width: 100%;
+				height: 40vw;
+				margin-bottom: .4em;
+			}
+			#amelioration{
+				width: 100%;
+				.content{
+					padding: .3em;
+					#diponible{
+						display: flex;
+						flex-direction: column;
+					}
+					.panel{
+						width: 49%
+					}
+				}
+			}
+		}
+    }
+}
+
+@media(min-width: 561px) and (max-width: 785px) {
+
+    #container {
+
+        #zone_gauche {
+            width: 33%;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-around;
+
+            .panel{
+            	width: 100%;
+            	.panel_title{
+	        		font-size: 1em;
+	        		height: 2em;
+	        		line-height: 1.4em;
+	        		padding: .2em;
+        		}
+            	.panel_content{
+            		margin: .2em;
+            		p{
+            			font-size: 1em;
+            		}
+            		.progress {
+		                height: 1.3em;
+		                .progress-bar {
+		                    height: 1.2em;
+		                    p {
+		                        line-height: 1.4em;
+		                        font-size: .8rem;
+		                    }
+		                }
+		            }
+            		a.btn-right{
+            			margin: .2em;
+            			padding: .15em;
+            			height: 2em;
+            			line-height: 1.5em;
+            			font-size: .9em;
+            		}
+            		span{
+            			margin-top: .5em;
+            			font-size: .9em;
+            		}
+            	}
+            }
+        }
+        #main{
+			width: 100%;
+			padding: .4em;
+			display: flex;
+			flex-direction: column;
+			#animation{
+				width: 100%;
+				height: 40vw;
+				margin-bottom: .4em;
+			}
+			#amelioration{
+				width: 100%;
+				.content{
+					padding: .3em;
+					#diponible{
+						display: flex;
+						flex-direction: column;
+					}
+					.panel{
+						width: 49%
+					}
+				}
+			}
+		}
+    }
+}

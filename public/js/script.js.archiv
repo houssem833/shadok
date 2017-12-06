@@ -1,0 +1,109 @@
+let ajax= (methode,url,last={}) =>
+{
+    let req = new XMLHttpRequest()
+
+	req.open(methode,url)
+	req.send(null);
+
+	req.onreadystatechange = (event)=> {
+    // XMLHttpRequest.DONE === 4
+    // 
+        let response = event.target;
+        if (response.readyState === XMLHttpRequest.DONE) {
+            if (response.status === 200 || response.status === 304) {
+            	if (last.complite != undefined) {
+            		last.complite(response)
+    			}
+            } else  {
+
+                	if (last.erreur != undefined) {
+                		last.erreur(response.status,response.statusText)
+        			}
+                }
+        }
+    }
+}
+class pageModel{
+	constructor(obj) {
+		this.isComplite = false;
+		
+	}
+	getContent(){
+		return this.content
+	}
+	setContent(content){
+		this.content = content;
+	}
+}
+class renderer {
+	constructor() {
+	}
+	getPage(){
+		return this.page;
+	}
+	setPage(page){
+		this.page = page;
+	}
+	render(balise){
+		
+		let elem = document.querySelector(balise);
+		elem.innerHTML = "";
+		elem.innerHTML = this.page.getContent();
+	}
+}
+class app{
+	constructor(pagesArray,renderer){
+		this.pagesArray = pagesArray;
+		this.pages = new Object();
+		this.renderer = renderer;
+		this.balise = "game"
+	}
+	render(pageName,elem,callback=0){
+		if (elem == undefined) {
+			elem =this.balise;
+		}
+		let arrayPageNames = Object.keys(this.pages);
+		let page = null;
+		if (arrayPageNames.includes(pageName)) {
+			page = this.pages[pageName]
+			this.execRender(page,elem,callback);
+		}
+		else{
+			let arrayPageLinkNames = Object.keys(this.pagesArray);
+			if (arrayPageLinkNames.includes(pageName)) {
+				let complite = (res)=>{
+					page = new pageModel();
+					page.setContent(res.response)
+					this.pages[pageName] = page
+					this.execRender(page,elem,callback);
+				}
+				this.load(this.pagesArray[pageName],complite)
+			}
+		}
+	}
+	execRender(page,elem,callback=0){
+		this.renderer.setPage(page)
+		this.renderer.render(elem)
+		if (callback != 0) {
+			callback()
+		}
+	}
+	load(url,complite){
+		ajax("GET",url,{complite})
+	}
+}
+
+		
+let rendererImp = new renderer();
+
+let pages = {homePage:"./pages/page1.html",Page2:"./pages/page2.html"}
+
+let appImp = new app(pages,rendererImp);
+
+appImp.render("homePage");
+
+let button = document.querySelector("#btn_load")
+button.addEventListener("click",()=>appImp.render("Page2",appImp.balise,code));
+function code(){
+	document.querySelector("#page2").addEventListener("click",()=>alert("page 2"))
+}
