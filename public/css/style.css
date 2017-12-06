@@ -12,11 +12,21 @@ header {
   border-radius: 0 0 0.2em 0.2em;
   background: #222222; }
   header #title {
+    display: inline-block;
+    width: 3em;
+    padding-left: 1em;
     height: 2em;
     line-height: 2em;
     text-align: center;
     color: white;
     font-weight: bold; }
+  header #balance {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    color: #dddddd;
+    line-height: 2em;
+    text-align: center; }
 
 /******************************************************
 ------------------------ CONTAINER -----------------------

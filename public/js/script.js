@@ -1,30 +1,76 @@
 "use strict"
-class BalanceValue{
-	constructor(value){
-		this.value = value;
-	}
-	getValue(){
-		return this.value;
-	}
-	incrimente(){
-		return ++this.value;
-	}
-}
+
+let producteur = {
+    tag : "div",
+    classArray : ["panel"],
+    attributesArray : {id : "producteur"},
+    chileds:[
+        {
+            tag : "div",
+            classArray : ["panel_title"],
+            attributesArray : {},
+            content : "Pompeurs : 10",
+            chileds:[]
+        },
+        {
+            tag : "div",
+            classArray : ["panel_content"],
+            attributesArray : {},
+            chileds:[
+                {
+                    tag : "div",
+                    classArray : ["progress"],
+                    attributesArray : {},
+                    chileds:[
+                        {
+                            tag : "div",
+                            classArray : ["progress-bar"],
+                            attributesArray : {},
+                            chileds:[
+                                {
+                                    tag : "p",
+                                    classArray : [],
+                                    attributesArray : {},
+                                    content:"+1.6k",
+                                    chileds:[]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    tag : "span",
+                    classArray : [],
+                    attributesArray : {},
+                    content:"Prix : 766&cent;",
+                    chileds:[]
+                },
+                {
+                    tag : "a",
+                    classArray : ["btn-right"],
+                    attributesArray : {href:"#"},
+                    content:"Acheter",
+                    chileds:[]
+                }
+            ]
+        }
+    ]
+};
+
 class Game{
 	constructor(model,view,controleur,balanceValue){
-		this.model = new model(1);
+		this.model = new model();
 		this.view = new view();
 		this.controleur = new controleur();
 		this.pompeEvent = new Event("pompe")
 		this.balance = this.view.getXMLNode("#balance>span");
-		this.balanceValue = new balanceValue(0);
 		this.init();
 		this.start();
 	}
 
 	init(){
-		this.balance.setData(this.balanceValue.getValue());
-		this.shadok = this.model.getShadok();
+		this.model.laodUser();
+		this.balance.setData(this.model.user.getBalanceValue());
 	}
 
 	start(){
@@ -32,8 +78,8 @@ class Game{
 		let pomperBtn = this.view.getElement("#pomperBtn");
 		let balancer = this.view.getXMLNode("#balance>span");
 
-		pomperBtn.addEventListener("click",this.controleur.pomper.bind(null,this.balance,this.balanceValue,this.pompeEvent));
-		document.addEventListener("pompe",this.controleur.pomped.bind(null,this.balanceValue,this.shadok));
+		pomperBtn.addEventListener("click",this.controleur.pomper.bind(null,this.model.user,balancer,this.pompeEvent));
+		document.addEventListener("pompe",this.controleur.pomped.bind(null,this.model.user,this.view));
 	}
 	/*destroy(){
 		let pomperBtn = this.view.getElement("#pomperBtn");
@@ -45,15 +91,17 @@ class Game{
 class Controleur{
 	constructor(){
 	}
-	pomper(balancer,balanceValue,pompEvt,e){
+	pomper(user,balancer,pompEvt,e){
 		e.preventDefault();
-		let value = balanceValue.incrimente();
+		let value = user.getBalanceValue()+1;
+		user.setBalanceValue(value);
 		balancer.setData(value);
 		document.dispatchEvent(pompEvt);
 	}
-	pomped(balanceValue,shadok){
-		if (balanceValue.getValue() == shadok.prix) {
-			console.log("prix sahadok atteint");
+	pomped(user,view){
+		if (user.getBalanceValue() == user.getShadokPrix()) {
+			let producerNode = view.createElement(producteur);
+			view.appendTo(producerNode,"#zone_gauche");
 		}
 		
 	}
@@ -65,6 +113,32 @@ class view{
 	}
 	getXMLNode(element){
 		return new XMLNode(element);
+	}
+	appendTo(element,selector){
+		let selectorNode = this.getElement(selector);
+		selectorNode.appendChild(element);
+	}
+	createElement(element){
+		let elementNode = document.createElement(element.tag);
+		if(element.content != undefined)
+			elementNode.innerText = element.content;
+		this.addClass(elementNode,element.classArray);
+		this.addAttributes(elementNode,element.attributesArray)
+		element.chileds.forEach(
+			chiled => {
+                let chiledNode = this.createElement(chiled);
+                elementNode.appendChild(chiledNode);
+            }
+		);
+		return elementNode;
+	}
+	addClass(element,classArray){
+		classArray.forEach(className => element.classList.add(className) );
+		return element;
+	}
+	addAttributes(element,attributesArray){
+        Object.keys(attributesArray).forEach(attributeKey => element[attributeKey]=attributesArray[attributeKey] );
+        return element;
 	}
 }
 class XMLNode{
@@ -79,20 +153,40 @@ class XMLNode{
 		this.node.data = data;
 	}
 }
+class User{
+	constructor(){
+		this.parametres = {
+			balance : 0,
+			shadokPrix: 20
+		}
+	}
+    setBalanceValue(value){
+        this.parametres.balance = value;
+    }
+    getBalanceValue(){
+        return this.parametres.balance;
+    }
+    setShadokPrix(prix){
+    	this.parametres.shadokPrix = prix;
+	}
+	getShadokPrix(){
+    	return this.parametres.shadokPrix;
+	}
+}
 class Model{
-	constructor(niveau){
-		this.niveau = niveau;
+	constructor(){
+		this.laodUser();
 	}
-	getShadok(){
-		return new Shadok(this.niveau*20);
+
+	fulsh(){
+		console.log("envoyer la requête");
+	}
+	laodUser(){
+		this.user = new User();
 	}
 }
-class Shadok{
-	constructor(prix){
-		this.prix = prix;
-	}
-}
-let gameImp = new Game(Model,view,Controleur,BalanceValue);
+
+let gameImp = new Game(Model,view,Controleur);
 
 gameImp.init();
 /*

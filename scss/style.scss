@@ -24,12 +24,23 @@ header {
     background: $background_header_color;
 
     #title {
+		display: inline-block;
+		width: 3em;
+		padding-left: 1em;
         height: $header_height;
         line-height: $header_height;
         text-align: center;
         color: white;
         font-weight: bold;
     }
+	#balance{
+		position: absolute;
+		width: 100%;
+		top: 0;
+		color: #dddddd;
+		line-height: $header_height;
+		text-align: center;
+	}
 }
 
 

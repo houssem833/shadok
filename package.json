@@ -4,7 +4,7 @@
   "description": "\"idle game\"",
   "main": "index.js",
   "scripts": {
-    "serv": "gulp",
+    "serv": "concurrently \"gulp watch\" \"node index\"",
     "serv-dev": "gulp dev"
   },
   "author": "",
@@ -19,5 +19,8 @@
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^3.1.0",
     "lite-server": "^2.3.0"
+  },
+  "dependencies": {
+    "express": "^4.16.2"
   }
 }
