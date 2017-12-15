@@ -82,11 +82,13 @@ header {
           margin-top: 1em;
           font-size: .9em; }
         #container #zone_gauche .panel .panel_content a.btn {
+          cursor: pointer;
           display: inline-block;
           margin-left: 10%;
           width: 80%;
           height: 1.5em; }
         #container #zone_gauche .panel .panel_content a.btn-right {
+          cursor: pointer;
           padding: .4em;
           height: 2.5em;
           float: right;

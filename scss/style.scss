@@ -103,12 +103,14 @@ header {
 	            	font-size: .9em;
 	            }
 	            a.btn {
+					cursor: pointer;
 	                display: inline-block;
 	                margin-left: 10%;
 	                width: 80%;
 	                height: 1.5em;
 	            }
 	            a.btn-right {
+					cursor: pointer;
 	                padding: .4em;
 	                height: 2.5em;
 	                float: right;
