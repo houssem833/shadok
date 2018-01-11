@@ -35,6 +35,8 @@ let gameController = {
         };
         req.body.id = req.user.id;
         let user = new UserDBMapper(req.body);
+        let date = new Date().toLocaleString('fr-FR', {timeZone: 'Europe/Paris'});
+        user.last_update = date;
         User.save(user,done);
     },
 
@@ -42,10 +44,13 @@ let gameController = {
 let userController={
     user:function (req,res) {
         res.header("content-type : text/javascript");
+        let date = new Date().toLocaleString('fr-FR', {timeZone: 'Europe/Paris'});
         let user = req.user;
         delete user.id;
         delete user.username;
         delete user.password;
+
+        user.params.currentDate = date;
         res.json(user);
     },
     login:function (req,res) {
@@ -73,6 +78,15 @@ let userController={
         }
 
         User.save(newUser,done);
+    },
+    test:function (req,res) {
+        let done = (err,user)=>{
+            let date = new Date().toLocaleString('fr-FR', {
+                timeZone: 'Europe/Paris'
+            });
+            res.send(date);
+        }
+        let user = User.getUserById(1,done)
     }
 };
 

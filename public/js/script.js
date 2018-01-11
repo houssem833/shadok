@@ -25,7 +25,7 @@ class Game{
         let pompeBtn = this.view.getElement("#pomperBtn");
         let deconectionLink = this.view.getElement("#deconectionLink");
         // appliquer les fonction
-        this.start(pompeBtn,deconectionLink)
+        this.controller.updateData(this.model,this.start.bind(this,pompeBtn,deconectionLink))
     }
 
     start(pompeBtn,deconectionLink){
@@ -54,7 +54,29 @@ class Controller{
             //document.dispatchEvent(this.pompeEvent);
         }
         let data = "cosmogole="+model.user.params.cosmogole;
+        if(model.user.params.planConstructionActive){
+            data+="&producteur_count="+model.user.producteur.count;
+            if(model.user.params.transfertConnaissanceActive)
+                data+="&constructeur_count="+model.user.constructeur.count;
+        }
+
         model.loadData("post",'/update',{data,complite});
+    }
+    updateData(model,callback){
+        let deffTime = new Date(model.user.params.currentDate).getTime()- new Date(model.user.params.lastUpdate).getTime();
+        if(model.user.params.universiteActive){
+
+        }
+        if(model.user.params.transfertConnaissanceActive){
+            let producteurCount = Math.ceil((deffTime*model.user.constructeur.count)/model.user.constructeur.interval);
+            model.user.producteur.count += producteurCount;
+        }
+        if(model.user.params.recruterActive){
+            let cosmogoleCount = Math.ceil((deffTime*model.user.producteur.count)/model.user.producteur.interval);
+            model.user.params.cosmogole += cosmogoleCount;
+        }
+        this.saveChange(model);
+        callback();
     }
     disconnect(model,evt){
         evt.preventDefault();
@@ -197,6 +219,23 @@ class Controller{
     }
     timerCallback(model,view){
         if(model.user.params.recruterActive){
+
+            if(model.user.params.transfertConnaissanceActive){
+                let constructeurProgressBar = view.getElement("#constructeur .progress .progress-bar");
+                if(model.user.constructeur.value == undefined){
+                    model.user.constructeur.value = 0;
+                    constructeurProgressBar.style["width"]= "0%";
+                }
+                model.user.constructeur.value += (model.user.params.timerInterval * model.user.constructeur.count) /model.user.constructeur.interval;
+                if (model.user.constructeur.value >1){
+                    let deffConstructeur = Number.parseInt(model.user.constructeur.value);
+                    model.user.constructeur.value -= deffConstructeur;
+                    model.user.producteur.count+=deffConstructeur;
+                    let producteurTitle = view.getElement("#producteur .panel_title");
+                    view.addText(producteurTitle,"Pompeurs : "+model.user.producteur.count);
+                }
+                constructeurProgressBar.style["width"]= (model.user.producteur.value*100)+"%";
+            }
             let producteurProgressBar = view.getElement("#producteur .progress .progress-bar");
             if(model.user.producteur.value == undefined){
                 model.user.producteur.value = 0;
@@ -205,9 +244,9 @@ class Controller{
 
             model.user.producteur.value += (model.user.params.timerInterval * model.user.producteur.count) /model.user.producteur.interval;
             if (model.user.producteur.value >1){
-                let deff = Number.parseInt(model.user.producteur.value)
-                model.user.producteur.value -= deff;
-                model.user.params.cosmogole+=deff;
+                let deffProducteur = Number.parseInt(model.user.producteur.value)
+                model.user.producteur.value -= deffProducteur;
+                model.user.params.cosmogole+=deffProducteur;
                 document.dispatchEvent(this.pompeEvent);
             }
 
@@ -321,10 +360,33 @@ class Controller{
             let constructeur = JSON.parse(res.response);
             let constructeurNode = view.createElement(constructeur);
             view.appendTo(constructeurNode,"#zone_gauche");
-            let constructeurTitle = view.getElement("#constructeur .panel_title");
-            view.addText(constructeurTitle,"Constructeur : "+model.user.constructor.count);
+            let titleNode = view.getElement("#constructeur .panel_title");
+            view.addText(titleNode,"Constructeur : "+model.user.constructeur.count);
+            let spanNode = view.getElement(".constructeur_notif");
+            view.addHtml(spanNode,"Prix : "+model.user.constructeur.prix+"&cent;");
+            let constructeurBtn = view.getElement("#constructeur_btn");
+            constructeurBtn.addEventListener("click",this.acheterConstructeur.bind(this,model,view,spanNode,titleNode));
         }
         model.loadData("get","/constructeur",{complite})
+    }
+
+    acheterConstructeur(model,view,spanNode,titleNode,evt){
+        evt.preventDefault();
+        if(model.user.params.cosmogole>=model.user.constructeur.prix){
+            model.user.params.cosmogole-= model.user.constructeur.prix;
+            model.user.constructeur.prix = Math.ceil(model.user.constructeur.prix * model.user.params.coefficient);
+            model.user.constructeur.count++;
+            let complite = (res)=>{
+                if(res.response){
+                    view.addText(titleNode,"Constructeurs : "+model.user.constructeur.count);
+                    view.addHtml(spanNode,"Prix : "+model.user.constructeur.prix+"&cent;");
+                    document.dispatchEvent(this.pompeEvent);
+                }
+
+            }
+            let data = "cosmogole="+model.user.params.cosmogole+"&constructeur_prix="+model.user.constructeur.prix+"&constructeur_count="+model.user.constructeur.count;
+            model.loadData("post",'/update',{data,complite});
+        }
     }
     /**
      * activer l'evenement de constrution des nouvelles pompes

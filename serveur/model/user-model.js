@@ -36,6 +36,12 @@ module.exports.UserDBMapper = function (user,addDefaultParams=false){
         this.producteur_prix = user.producteur_prix;
     if(user.producteur_count != undefined)
         this.producteur_count = user.producteur_count;
+    if(user.constructeur_prix != undefined)
+            this.constructeur_prix = user.constructeur_prix;
+    if(user.constructeur_count != undefined)
+        this.constructeur_count = user.constructeur_count;
+    if(user.last_update != undefined)
+        this.last_update = user.last_update;
 
     if(addDefaultParams){
         this.recruter_prix = params.recruterPrix;
@@ -61,7 +67,8 @@ module.exports.UserRespMapper = function (data) {
         transfertConnaissanceActive : (data['is_transfert_connaissance']>0),
         universiteActive : (data['is_universite']>0),
         timerInterval : data['timer_interval'],
-        coefficient : data['coefficient']
+        coefficient : data['coefficient'],
+        lastUpdate : data['last_update']
     };
     this.recruter = {
         prix : data['recruter_prix']
@@ -77,7 +84,7 @@ module.exports.UserRespMapper = function (data) {
     this.transfertConnaissance = {
         prix : data['transfert_connaissance_prix']
     };
-    this.constructor = {
+    this.constructeur = {
         count : data['constructeur_count'],
         interval : data['constructeur_interval'],
         prix : data['constructeur_prix']

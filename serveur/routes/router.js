@@ -21,6 +21,8 @@ router.get('/login',controllers.userController.login);
 router.get('/logout',ensureAuthenticated,controllers.userController.logout);
 router.get('/user',ensureAuthenticated,controllers.userController.user);
 
+router.get('/test',controllers.userController.test);
+
 router.post('/update',ensureAuthenticated,controllers.gameController.update);
 router.post('/login',passport.authenticate('local', {successRedirect:'/game', failureRedirect:'/login'}),
     function(req, res) {
