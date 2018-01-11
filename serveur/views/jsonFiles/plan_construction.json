@@ -1,0 +1,37 @@
+{
+  "tag": "div",
+  "classArray": [
+    "panel"
+  ],
+  "attributesArray": {
+    "id": "plan_construction"
+  },
+  "chileds": [
+    {
+      "tag": "div",
+      "classArray": [
+        "panel_title"
+      ],
+      "attributesArray": {},
+      "content":"Plan de construction",
+      "chileds": []
+    },
+    {
+      "tag": "div",
+      "classArray": [
+        "panel_content"
+      ],
+      "attributesArray": {},
+      "chileds": [
+        {
+          "tag": "span",
+          "classArray": [
+          ],
+          "attributesArray": {},
+          "chileds": [
+          ]
+        }
+      ]
+    }
+  ]
+}

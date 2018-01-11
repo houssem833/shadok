@@ -1,0 +1,56 @@
+{
+  "tag" : "div",
+  "classArray" : ["panel"],
+  "attributesArray": {
+    "id": "constructeur"
+  },
+  "chileds":[
+    {
+      "tag" : "div",
+      "classArray" : ["panel_title"],
+      "attributesArray ": {},
+      "content" : "Constructeur : 1",
+      "chileds":[]
+    },
+    {
+      "tag" : "div",
+      "classArray" : ["panel_content"],
+      "attributesArray" : {},
+      "chileds":[
+        {
+          "tag" : "div",
+          "classArray" : ["progress"],
+          "attributesArray" : {},
+          "chileds":[
+            {
+              "tag" : "div",
+              "classArray" : ["progress-bar"],
+              "attributesArray" : {},
+              "chileds":[
+
+              ]
+            }
+          ]
+        },
+        {
+          "tag" : "span",
+          "classArray" : ["constructeur_notif"],
+          "attributesArray" : {},
+          "chileds":[
+          ]
+        },
+        {
+          "tag" : "a",
+          "classArray" : ["btn-right"],
+          "attributesArray" : {
+            "href":"#",
+            "id":"constructeur_btn"
+          },
+          "content" : "Acheter",
+          "chileds":[
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "tag" : "div",
+  "classArray" : ["panel"],
+  "attributesArray": {
+    "id": "producteur"
+  },
+  "chileds":[
+    {
+      "tag" : "div",
+      "classArray" : ["panel_title"],
+      "attributesArray ": {},
+      "content" : "Pompeurs : 1",
+      "chileds":[]
+    },
+    {
+      "tag" : "div",
+      "classArray" : ["panel_content"],
+      "attributesArray" : {},
+      "chileds":[
+        {
+          "tag" : "div",
+          "classArray" : ["progress"],
+          "attributesArray" : {},
+          "chileds":[
+            {
+              "tag" : "div",
+              "classArray" : ["progress-bar"],
+              "attributesArray" : {},
+              "chileds":[
+
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -27,6 +27,24 @@ header {
     color: #dddddd;
     line-height: 2em;
     text-align: center; }
+  header #deconection{
+    float: right;
+    margin-right: 1em;
+    margin-top: .1em;
+    height: 8em;
+  }
+  header #deconection a{
+    position: absolute;
+    right: 1em;
+    padding: .4em;
+    background: #337AB7;
+    text-decoration: none;
+    color: #dddddd;
+    line-height: .4em;
+    font-size:1em;
+    border: .2em solid #337AB7;
+    border-radius: .4em;
+  }
 
 /******************************************************
 ------------------------ CONTAINER -----------------------
@@ -71,7 +89,7 @@ header {
             width: 90%;
             background: #285f8f;
             border-radius: .1em; }
-            #container #zone_gauche .panel .panel_content .progress .progress-bar p {
+            #container #zone_gauche .panel .panel_content .progress p {
               color: white;
               text-align: center;
               height: 1.9em;
@@ -147,6 +165,9 @@ header {
           -webkit-box-direction: normal;
               -ms-flex-direction: row;
                   flex-direction: row; }
+        #recruter,#plan_construction,#transfert_connaissance{
+          cursor: pointer !important;
+        }
         #container #main #amelioration .content .panel {
           width: 100%;
           display: inline-block;
@@ -175,9 +196,12 @@ header {
                 text-align: center;
                 float: right;
                 color: #337AB7;
-                margin-bottom: .4em; }
+                margin-bottom: .4em;
+              }
           #container #main #amelioration .content .panel[disabled] {
-            border-color: silver; }
+            border-color: silver;
+            cursor: default !important;
+          }
             #container #main #amelioration .content .panel[disabled] > .panel_title {
               background: silver; }
             #container #main #amelioration .content .panel[disabled] > .panel_content > span {
@@ -235,9 +259,13 @@ footer {
           #container #zone_gauche .panel .panel_content .progress .progress-bar {
             height: .9em;
             width: 90%; }
-            #container #zone_gauche .panel .panel_content .progress .progress-bar p {
+            #container #zone_gauche .panel .panel_content .progress p {
+              position: absolute;
               line-height: 1em;
-              font-size: .9rem; }
+              font-size: .9rem;
+              width: 100%;
+
+            }
         #container #zone_gauche .panel .panel_content a.btn {
           width: 100%;
           margin-left: 0; }
@@ -311,7 +339,7 @@ footer {
             height: 1em; }
             #container #zone_gauche .panel .panel_content .progress .progress-bar {
               height: .9em; }
-              #container #zone_gauche .panel .panel_content .progress .progress-bar p {
+              #container #zone_gauche .panel .panel_content .progress p {
                 line-height: 1.2em;
                 font-size: .9rem; }
           #container #zone_gauche .panel .panel_content a.btn-right {
@@ -378,7 +406,7 @@ footer {
           height: 1.3em; }
           #container #zone_gauche .panel .panel_content .progress .progress-bar {
             height: 1.2em; }
-            #container #zone_gauche .panel .panel_content .progress .progress-bar p {
+            #container #zone_gauche .panel .panel_content .progress p {
               line-height: 1.4em;
               font-size: .8rem; }
         #container #zone_gauche .panel .panel_content a.btn-right {

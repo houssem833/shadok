@@ -1,0 +1,37 @@
+{
+  "tag": "div",
+  "classArray": [
+    "panel"
+  ],
+  "attributesArray": {
+    "id": "recruter"
+  },
+  "chileds": [
+    {
+      "tag": "div",
+      "classArray": [
+        "panel_title"
+      ],
+      "attributesArray": {},
+      "content":"Recruter",
+      "chileds": []
+    },
+    {
+      "tag": "div",
+      "classArray": [
+        "panel_content"
+      ],
+      "attributesArray": {},
+      "chileds": [
+        {
+          "tag": "span",
+          "classArray": [
+          ],
+          "attributesArray": {},
+          "chileds": [
+          ]
+        }
+      ]
+    }
+  ]
+}
