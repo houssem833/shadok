@@ -2,7 +2,7 @@
   "name": "shadok",
   "version": "1.0.0",
   "description": "\"idle game\"",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "serv": "concurrently \"gulp watch\" \"node index\"",
     "serv-dev": "gulp dev"

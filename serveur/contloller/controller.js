@@ -78,15 +78,6 @@ let userController={
         }
 
         User.save(newUser,done);
-    },
-    test:function (req,res) {
-        let done = (err,user)=>{
-            let date = new Date().toLocaleString('fr-FR', {
-                timeZone: 'Europe/Paris'
-            });
-            res.send(date);
-        }
-        let user = User.getUserById(1,done)
     }
 };
 
