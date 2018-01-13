@@ -7,6 +7,8 @@ let params ={
     plan_construction_prix:20,
     transfert_connaissance_prix:20,
     constructeur_prix:20,
+    universite_shadok_prix:20,
+    universite_prix:20,
     coefficient:1.4
 };
 /**
@@ -27,27 +29,35 @@ module.exports.UserDBMapper = function (user,addDefaultParams=false){
     if(user.recruterActive != undefined)
         this.is_recruter = user.recruterActive ?1:0;
     if(user.planConstructionActive != undefined)
-        this.is_plan_construction = user.planConstructionActive?1:0;;
+        this.is_plan_construction = user.planConstructionActive?1:0;
     if(user.transfertConnaissanceActive != undefined)
-        this.is_transfert_connaissance = user.transfertConnaissanceActive?1:0;;
+        this.is_transfert_connaissance = user.transfertConnaissanceActive?1:0;
     if(user.universiteActive != undefined)
         this.is_universite = user.universiteActive?1:0;
     if(user.producteur_prix != undefined)
         this.producteur_prix = user.producteur_prix;
+    if(user.universite_shadok_prix != undefined)
+        this.universite_shadok_prix = user.universite_shadok_prix;
     if(user.producteur_count != undefined)
         this.producteur_count = user.producteur_count;
     if(user.constructeur_prix != undefined)
             this.constructeur_prix = user.constructeur_prix;
     if(user.constructeur_count != undefined)
         this.constructeur_count = user.constructeur_count;
+    if(user.universite_prix != undefined)
+        this.universite_prix = user.universite_prix;
+    if(user.universite_count != undefined)
+        this.universite_count = user.universite_count;
     if(user.last_update != undefined)
         this.last_update = user.last_update;
+
 
     if(addDefaultParams){
         this.recruter_prix = params.recruterPrix;
         this.producteur_prix = params.producteur_prix;
         this.plan_construction_prix = params.plan_construction_prix;
         this.transfert_connaissance_prix = params.transfert_connaissance_prix;
+        this.universite_shadok_prix = params.universite_shadok_prix;
         this.constructeur_prix = params.constructeur_prix;
         this.coefficient = params.coefficient;
     }
@@ -88,6 +98,14 @@ module.exports.UserRespMapper = function (data) {
         count : data['constructeur_count'],
         interval : data['constructeur_interval'],
         prix : data['constructeur_prix']
+    };
+    this.universiteShadok = {
+        prix : data['universite_shadok_prix']
+    };
+    this.universite = {
+        count : data['universite_count'],
+        interval : data['universite_interval'],
+        prix : data['universite_prix']
     };
 };
 
