@@ -13,8 +13,10 @@ router.get('/game',ensureAuthenticated,controllers.gameController.game);
 router.get('/recruter',ensureAuthenticated,controllers.gameController.recruter);
 router.get('/producteur',ensureAuthenticated,controllers.gameController.producteur);
 router.get('/constructeur',ensureAuthenticated,controllers.gameController.constructeur);
+router.get('/universite',ensureAuthenticated,controllers.gameController.universite);
 router.get('/plan_construction',ensureAuthenticated,controllers.gameController.planConstruction);
 router.get('/transfert_connaissance',ensureAuthenticated,controllers.gameController.transfertConnaissance);
+router.get('/universite_shadok',ensureAuthenticated,controllers.gameController.universiteShadok);
 
 router.get('/register',controllers.userController.register);
 router.get('/login',controllers.userController.login);

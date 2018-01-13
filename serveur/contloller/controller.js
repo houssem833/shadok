@@ -23,11 +23,17 @@ let gameController = {
     constructeur:function(req,res){
         res.sendFile(path.join(__dirname + '/../views/jsonFiles/constructeur.json'));
     },
+    universite:function(req,res){
+        res.sendFile(path.join(__dirname + '/../views/jsonFiles/universite.json'));
+    },
     planConstruction:function(req,res){
         res.sendFile(path.join(__dirname + '/../views/jsonFiles/plan_construction.json'));
     },
     transfertConnaissance:function(req,res){
         res.sendFile(path.join(__dirname + '/../views/jsonFiles/transfert_connaissance.json'));
+    },
+    universiteShadok:function(req,res){
+        res.sendFile(path.join(__dirname + '/../views/jsonFiles/universite_shadok.json'));
     },
     update:function(req,res){
         let done = (err,isUpdated)=>{
