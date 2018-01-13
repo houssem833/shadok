@@ -2,14 +2,14 @@
   "tag" : "div",
   "classArray" : ["panel"],
   "attributesArray": {
-    "id": "producteur"
+    "id": "universite"
   },
   "chileds":[
     {
       "tag" : "div",
       "classArray" : ["panel_title"],
       "attributesArray ": {},
-      "content" : "Pompeurs : 1",
+      "content" : "Universite : 1",
       "chileds":[]
     },
     {
@@ -28,6 +28,24 @@
               "attributesArray" : {},
               "chileds":[]
             }
+          ]
+        },
+        {
+          "tag" : "span",
+          "classArray" : ["universite_notif"],
+          "attributesArray" : {},
+          "chileds":[
+          ]
+        },
+        {
+          "tag" : "a",
+          "classArray" : ["btn-right"],
+          "attributesArray" : {
+            "href":"#",
+            "id":"universite_btn"
+          },
+          "content" : "Acheter",
+          "chileds":[
           ]
         }
       ]

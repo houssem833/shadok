@@ -26,9 +26,7 @@
               "tag" : "div",
               "classArray" : ["progress-bar"],
               "attributesArray" : {},
-              "chileds":[
-
-              ]
+              "chileds":[]
             }
           ]
         },
