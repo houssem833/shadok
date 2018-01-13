@@ -51,13 +51,14 @@ class Controller{
         let complite = (res)=>{
             if(callback != undefined)
                 callback();
-            //document.dispatchEvent(this.pompeEvent);
         }
         let data = "cosmogole="+model.user.params.cosmogole;
         if(model.user.params.planConstructionActive){
             data+="&producteur_count="+model.user.producteur.count;
             if(model.user.params.transfertConnaissanceActive)
                 data+="&constructeur_count="+model.user.constructeur.count;
+            if(model.user.params.universiteActive)
+                data+="&universite_count="+model.user.universite.count;
         }
 
         model.loadData("post",'/update',{data,complite});
@@ -65,7 +66,8 @@ class Controller{
     updateData(model,callback){
         let deffTime = new Date(model.user.params.currentDate).getTime()- new Date(model.user.params.lastUpdate).getTime();
         if(model.user.params.universiteActive){
-
+            let constructeurCount = Math.ceil((deffTime*model.user.universite.count)/model.user.universite.interval);
+            model.user.constructeur.count += constructeurCount;
         }
         if(model.user.params.transfertConnaissanceActive){
             let producteurCount = Math.ceil((deffTime*model.user.constructeur.count)/model.user.constructeur.interval);
@@ -152,6 +154,32 @@ class Controller{
                        this.afficherTransfertConnaissanceAcquisPanel(model,view);
                        dataUser.params.isAfficherTransfertConnaissanceAcquis = true;
                    }
+                   /**************************************************************************/
+
+                   if(
+                       dataUser.params.universiteActive == false &&
+                       dataUser.params.cosmogole >= dataUser.universite.prix &&
+                       dataUser.universite.object == undefined
+                   ){
+                       this.afficherUniversiteShadokPanel(model,view);
+                   }
+
+                   if(
+                       dataUser.params.universiteActive == false &&
+                       dataUser.params.cosmogole < dataUser.universite.prix &&
+                       dataUser.universite.object != undefined
+                   ){
+                       dataUser.universite.object.remove();
+                       delete dataUser.universite.object;
+                   }
+                   if( dataUser.params.universiteActive==true){
+                       if(dataUser.params.isAfficherUniversiteShadokAcquis == undefined){
+                           this.afficherUniversiteShadokAcquisPanel(model,view);
+                           dataUser.params.isAfficherUniversiteShadokAcquis = true;
+                       }
+
+                   }
+                   /**************************************************************************/
                }
            }
        }
@@ -166,7 +194,7 @@ class Controller{
             let recruterNode = view.createElement(recruter);
             view.appendTo(recruterNode,"#disponible .content");
             let recruterPrix = view.getElement("#recruter .panel_content span");
-            view.addHtml(recruterPrix,"Prix : "+model.user.recruter.prix+"&cent;")
+            view.addHtml(recruterPrix,"Prix : "+view.simpleValue(model.user.recruter.prix)+"&cent;")
             recruterNode.addEventListener("click",this.recruter.bind(this,model,recruterNode));
 
         }
@@ -181,7 +209,7 @@ class Controller{
             let recruterNode = view.createElement(recruter);
             view.appendTo(recruterNode,"#aquie .content");
             let recruterPrix = view.getElement("#recruter .panel_content span");
-            view.addHtml(recruterPrix,"Prix : "+model.user.recruter.prix+"&cent;")
+            view.addHtml(recruterPrix,"Prix : "+view.simpleValue(model.user.recruter.prix)+"&cent;")
             recruterNode.setAttribute("disabled", "disabled");
 
         }
@@ -209,7 +237,7 @@ class Controller{
             let producteurNode = view.createElement(producteur);
             view.appendTo(producteurNode,"#zone_gauche");
             let producteurTitle = view.getElement("#producteur .panel_title");
-            view.addText(producteurTitle,"Pompeurs : "+model.user.producteur.count);
+            view.addText(producteurTitle,"Pompeurs : "+view.simpleValue(model.user.producteur.count));
         }
         model.loadData("get","/producteur",{complite})
     }
@@ -221,6 +249,24 @@ class Controller{
         if(model.user.params.recruterActive){
 
             if(model.user.params.transfertConnaissanceActive){
+
+                if(model.user.params.universiteActive){
+                    let universiteProgressBar = view.getElement("#universite .progress .progress-bar");
+                    if(model.user.universite.value == undefined){
+                        model.user.universite.value = 0;
+                        universiteProgressBar.style["width"]= "0%";
+                    }
+                    model.user.universite.value += (model.user.params.timerInterval * model.user.universite.count) /model.user.universite.interval;
+                    if (model.user.universite.value >1){
+                        let deffUniversite = Number.parseInt(model.user.universite.value);
+                        model.user.universite.value -= deffUniversite;
+                        model.user.constructeur.count+=deffUniversite;
+                        let constructeurTitle = view.getElement("#constructeur .panel_title");
+                        view.addText(constructeurTitle,"Constructeurs : "+view.simpleValue(model.user.constructeur.count));
+                    }
+                    universiteProgressBar.style["width"]= (model.user.universite.value*100)+"%";
+                }
+
                 let constructeurProgressBar = view.getElement("#constructeur .progress .progress-bar");
                 if(model.user.constructeur.value == undefined){
                     model.user.constructeur.value = 0;
@@ -232,7 +278,7 @@ class Controller{
                     model.user.constructeur.value -= deffConstructeur;
                     model.user.producteur.count+=deffConstructeur;
                     let producteurTitle = view.getElement("#producteur .panel_title");
-                    view.addText(producteurTitle,"Pompeurs : "+model.user.producteur.count);
+                    view.addText(producteurTitle,"Pompeurs : "+view.simpleValue(model.user.producteur.count));
                 }
                 constructeurProgressBar.style["width"]= (model.user.producteur.value*100)+"%";
             }
@@ -261,7 +307,7 @@ class Controller{
             let planConstructionNode = view.createElement(planConstruction);
             view.appendTo(planConstructionNode,"#disponible .content");
             let planConstructionPrix = view.getElement("#plan_construction .panel_content span");
-            view.addHtml(planConstructionPrix,"Prix : "+model.user.producteur.prix+"&cent;")
+            view.addHtml(planConstructionPrix,"Prix : "+view.simpleValue(model.user.producteur.prix)+"&cent;")
             planConstructionNode.addEventListener("click",this.planConstruction.bind(this,model,planConstructionNode));
 
         }
@@ -273,7 +319,7 @@ class Controller{
             let planConstructionNode = view.createElement(planConstruction);
             view.appendTo(planConstructionNode,"#aquie .content");
             let planConstructionPrix = view.getElement("#plan_construction .panel_content span");
-            view.addHtml(planConstructionPrix,"Prix : "+model.user.producteur.prix+"&cent;");
+            view.addHtml(planConstructionPrix,"Prix : "+view.simpleValue(model.user.planConstruction.prix)+"&cent;");
             planConstructionNode.setAttribute("disabled", "disabled");
             this.afficherAchatProducteurBtn(model,view);
 
@@ -297,7 +343,7 @@ class Controller{
     afficherAchatProducteurBtn(model,view){
         let producteurContent = view.getElement("#producteur .panel_content");
         let spanNode = document.createElement("span");
-        view.addHtml(spanNode,"Prix : "+model.user.producteur.prix+"&cent;");
+        view.addHtml(spanNode,"Prix : "+view.simpleValue(model.user.producteur.prix)+"&cent;");
         let linkNode = document.createElement("a");
         linkNode.setAttribute("href","#");
         linkNode.setAttribute("id","producteuBtn");
@@ -316,8 +362,8 @@ class Controller{
             let complite = (res)=>{
                 if(res.response){
                     let producteurTitle = view.getElement("#producteur .panel_title");
-                    view.addText(producteurTitle,"Pompeurs : "+model.user.producteur.count);
-                    view.addHtml(spanNode,"Prix : "+model.user.producteur.prix+"&cent;");
+                    view.addText(producteurTitle,"Pompeurs : "+view.simpleValue(model.user.producteur.count));
+                    view.addHtml(spanNode,"Prix : "+view.simpleValue(model.user.producteur.prix)+"&cent;");
                     document.dispatchEvent(this.pompeEvent);
                 }
 
@@ -333,7 +379,7 @@ class Controller{
             let transfertConnaissanceNode = view.createElement(transfertConnaissance);
             view.appendTo(transfertConnaissanceNode,"#disponible .content");
             let transfertConnaissancePrix = view.getElement("#transfert_connaissance .panel_content span");
-            view.addHtml(transfertConnaissancePrix,"Prix : "+model.user.transfertConnaissance.prix+"&cent;")
+            view.addHtml(transfertConnaissancePrix,"Prix : "+view.simpleValue(model.user.transfertConnaissance.prix)+"&cent;")
             transfertConnaissanceNode.addEventListener("click",this.transfertConnaissance.bind(this,model,transfertConnaissanceNode));
             model.user.transfertConnaissance.object = transfertConnaissanceNode;
 
@@ -347,23 +393,24 @@ class Controller{
             let transfertConnaissance = JSON.parse(res.response);
             let transfertConnaissanceNode = view.createElement(transfertConnaissance);
             view.appendTo(transfertConnaissanceNode,"#aquie .content");
-            let transfertConnaissancePrix = view.getElement("#plan_construction .panel_content span");
-            view.addHtml(transfertConnaissancePrix,"Prix : "+model.user.transfertConnaissance.prix+"&cent;");
+            let transfertConnaissancePrix = view.getElement("#transfert_connaissance .panel_content span");
+            view.addHtml(transfertConnaissancePrix,"Prix : "+view.simpleValue(model.user.transfertConnaissance.prix)+"&cent;");
             transfertConnaissanceNode.setAttribute("disabled", "disabled");
             this.afficherConstructeurPanel(model,view);
 
         }
         model.loadData("get","/transfert_connaissance",{complite})
     }
+
     afficherConstructeurPanel(model,view){
         let complite=(res)=>{
             let constructeur = JSON.parse(res.response);
             let constructeurNode = view.createElement(constructeur);
             view.appendTo(constructeurNode,"#zone_gauche");
             let titleNode = view.getElement("#constructeur .panel_title");
-            view.addText(titleNode,"Constructeur : "+model.user.constructeur.count);
+            view.addText(titleNode,"Constructeurs : "+view.simpleValue(model.user.constructeur.count));
             let spanNode = view.getElement(".constructeur_notif");
-            view.addHtml(spanNode,"Prix : "+model.user.constructeur.prix+"&cent;");
+            view.addHtml(spanNode,"Prix : "+view.simpleValue(model.user.constructeur.prix)+"&cent;");
             let constructeurBtn = view.getElement("#constructeur_btn");
             constructeurBtn.addEventListener("click",this.acheterConstructeur.bind(this,model,view,spanNode,titleNode));
         }
@@ -378,8 +425,8 @@ class Controller{
             model.user.constructeur.count++;
             let complite = (res)=>{
                 if(res.response){
-                    view.addText(titleNode,"Constructeurs : "+model.user.constructeur.count);
-                    view.addHtml(spanNode,"Prix : "+model.user.constructeur.prix+"&cent;");
+                    view.addText(titleNode,"Constructeurs : "+view.simpleValue(model.user.constructeur.count));
+                    view.addHtml(spanNode,"Prix : "+view.simpleValue(model.user.constructeur.prix)+"&cent;");
                     document.dispatchEvent(this.pompeEvent);
                 }
 
@@ -400,6 +447,79 @@ class Controller{
             document.dispatchEvent(this.pompeEvent);
         }
         let data = "cosmogole="+model.user.params.cosmogole+"&transfertConnaissanceActive=true";
+        model.loadData("post",'/update',{data,complite});
+    }
+
+
+    afficherUniversiteShadokPanel(model,view){
+        let complite=(res)=>{
+            let universiteShadokPanel = JSON.parse(res.response);
+            let universiteShadokPanelNode = view.createElement(universiteShadokPanel);
+            view.appendTo(universiteShadokPanelNode,"#disponible .content");
+            let universiteShadokPrix = view.getElement("#universite_shadok .panel_content span");
+            view.addHtml(universiteShadokPrix,"Prix : "+view.simpleValue(model.user.universiteShadok.prix)+"&cent;")
+            universiteShadokPanelNode.addEventListener("click",this.universiteShadok.bind(this,model,universiteShadokPanelNode));
+            model.user.universite.object = universiteShadokPanelNode;
+
+
+        }
+        model.loadData("get","/universite_shadok",{complite});
+    }
+    afficherUniversiteShadokAcquisPanel(model,view){
+        let complite=(res)=>{
+            let universiteShadokPanel = JSON.parse(res.response);
+            let universiteShadokPanelNode = view.createElement(universiteShadokPanel);
+            view.appendTo(universiteShadokPanelNode,"#aquie .content");
+            let universiteShadokPrix = view.getElement("#universite_shadok .panel_content span");
+            view.addHtml(universiteShadokPrix,"Prix : "+view.simpleValue(model.user.universiteShadok.prix)+"&cent;");
+            universiteShadokPanelNode.setAttribute("disabled", "disabled");
+            this.afficherUniversitePanel(model,view);
+
+        }
+        model.loadData("get","/universite_shadok",{complite})
+    }
+    afficherUniversitePanel(model,view){
+        let complite=(res)=>{
+            let universite = JSON.parse(res.response);
+            let universiteNode = view.createElement(universite);
+            view.appendTo(universiteNode,"#zone_gauche");
+            let titleNode = view.getElement("#universite .panel_title");
+            view.addText(titleNode,"Universites : "+view.simpleValue(model.user.universite.count));
+            let spanNode = view.getElement(".universite_notif");
+            view.addHtml(spanNode,"Prix : "+view.simpleValue(model.user.universite.prix)+"&cent;");
+            let universiteBtn = view.getElement("#universite_btn");
+            universiteBtn.addEventListener("click",this.acheterUniversite.bind(this,model,view,spanNode,titleNode));
+        }
+        model.loadData("get","/universite",{complite})
+    }
+
+    acheterUniversite(model,view,spanNode,titleNode,evt){
+        evt.preventDefault();
+        if(model.user.params.cosmogole>=model.user.universite.prix){
+            model.user.params.cosmogole-= model.user.universite.prix;
+            model.user.universite.prix = Math.ceil(model.user.universite.prix * model.user.params.coefficient);
+            model.user.universite.count++;
+            let complite = (res)=>{
+                if(res.response){
+                    view.addText(titleNode,"Universites : "+view.simpleValue(model.user.universite.count));
+                    view.addHtml(spanNode,"Prix : "+view.simpleValue(model.user.universite.prix)+"&cent;");
+                    document.dispatchEvent(this.pompeEvent);
+                }
+
+            }
+            let data = "cosmogole="+model.user.params.cosmogole+"&universite_prix="+model.user.universite.prix+"&universite_count="+model.user.universite.count;
+            model.loadData("post",'/update',{data,complite});
+        }
+    }
+    universiteShadok(model,universiteShadokPanelNode){
+        model.user.params.universiteActive=true;
+        model.user.params.cosmogole = model.user.params.cosmogole - model.user.universiteShadok.prix;
+        universiteShadokPanelNode.removeEventListener("click",this.universiteShadok);
+        universiteShadokPanelNode.remove();
+        let complite = (res)=>{
+            document.dispatchEvent(this.pompeEvent);
+        }
+        let data = "cosmogole="+model.user.params.cosmogole+"&universiteActive=true";
         model.loadData("post",'/update',{data,complite});
     }
 
@@ -514,7 +634,22 @@ class View{
     }
     setCosmogole(value){
         let cosmogole = this.getElement("#balance span");
-        cosmogole.innerText =  value;
+        cosmogole.innerText =  this.simpleValue(value);
+    }
+    simpleValue(value){
+        let mid = Number.parseInt(value/1000);
+        if(mid > 0){
+            value = mid;
+            mid = Number.parseInt(value/1000);
+            if(mid > 0){
+                value = mid;
+                value+="M";
+            }
+            else{
+                value+="K";
+            }
+        }
+        return value
     }
     createElement(element){
         let elementNode = document.createElement(element.tag);
