@@ -97,8 +97,8 @@ header {
               font-size: 1rem; }
         #container #zone_gauche .panel .panel_content span {
           position: absolute;
-          margin-top: 1em;
-          font-size: .9em; }
+          margin-top: 1.5em;
+          font-size: .75em; }
         #container #zone_gauche .panel .panel_content a.btn {
           cursor: pointer;
           display: inline-block;
@@ -165,7 +165,7 @@ header {
           -webkit-box-direction: normal;
               -ms-flex-direction: row;
                   flex-direction: row; }
-        #recruter,#plan_construction,#transfert_connaissance{
+        #recruter,#plan_construction,#transfert_connaissance,universite_shadok{
           cursor: pointer !important;
         }
         #container #main #amelioration .content .panel {
@@ -230,6 +230,18 @@ footer {
 @media (max-width: 320px) {
   body {
     width: 320px; }
+  header #balance{
+    font-size: .8em;
+    line-height: 2.4em;
+  }
+  header a#deconectionLink{
+    width: 6em;
+    height: 2em;
+    margin-top: .1em;
+    font-size: .8em;
+    line-height: .7em;
+
+  }
   #container {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
@@ -277,7 +289,8 @@ footer {
           font-size: 1em; }
         #container #zone_gauche .panel .panel_content span {
           margin-left: .2em;
-          font-size: .8em; }
+          font-size: .65em;
+          line-height: 2em}
     #container #main {
       width: 100%;
       padding: .4em;
@@ -305,9 +318,24 @@ footer {
                 -ms-flex-direction: column;
                     flex-direction: column; }
           #container #main #amelioration .content .panel {
-            width: 49%; } }
+            width: 49%;
+          }
+          #container #main #amelioration .content .panel .panel_title{
+            font-size: .6em;
+          }
+}
 
 @media (min-width: 321px) and (max-width: 560px) {
+
+  header a#deconectionLink{
+    width: 6em;
+    height: 2em;
+    margin-top: .1em;
+    font-size: .8em;
+    line-height: .7em;
+
+  }
+
   #container {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
@@ -378,9 +406,14 @@ footer {
                 -ms-flex-direction: column;
                     flex-direction: column; }
           #container #main #amelioration .content .panel {
-            width: 49%; } }
+            width: 49%;
+          }
+            #container #main #amelioration .content .panel .panel_title{
+              font-size: .7em;
+            }
+}
 
-@media (min-width: 561px) and (max-width: 785px) {
+@media (min-width: 561px) and (max-width: 790px) {
   #container #zone_gauche {
     width: 33%;
     -webkit-box-orient: horizontal;
@@ -416,8 +449,8 @@ footer {
           line-height: 1.5em;
           font-size: .9em; }
         #container #zone_gauche .panel .panel_content span {
-          margin-top: .5em;
-          font-size: .9em; }
+          margin-top: .9em;
+          font-size: .75em; }
   #container #main {
     width: 100%;
     padding: .4em;
